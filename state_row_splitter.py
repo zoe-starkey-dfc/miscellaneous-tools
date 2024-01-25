@@ -33,22 +33,24 @@ for i,state in enumerate(data_category_range):
 for state in data_category_range:
     df = pd.read_excel(r'App ID Request_'+str(state)+str(date)+r'.xlsx')
     writer = pd.ExcelWriter(r'App ID Request_'+str(state)+str(date)+r'.xlsx', engine = 'xlsxwriter')
-    df.to_excel(writer, sheet_name=r'App ID Request - '+str(state), index = False)
+    df.to_excel(writer, sheet_name=r'App ID Request - '+str(state), index = False, startrow=1, header=False)
     col_idx = df.columns.get_loc('Application ID')
-    writer.sheets[r'App ID Request - '+str(state)].set_column(col_idx, col_idx, 15)
-    # #Sets parameters for header (alignment, text wrapping, color, etc)
-    # workbook = writer.book
-    # worksheet = writer.sheets[r'App ID Request - '+str(state)]
-    # header_format = workbook.add_format({
-    #     'bold': True, 
-    #     'text_wrap': True, 
-    #     'valign': 'top', 
-    #     'fg_color': '#FF00FF',
-    #     'border': 1})
+
+    #Sets parameters for header (alignment, text wrapping, color, etc)
+    workbook = writer.book
+    worksheet = writer.sheets[r'App ID Request - '+str(state)]
+    header_format = workbook.add_format({
+        'bold': True, 
+        'text_wrap': True, 
+        'valign': 'top', 
+        'fg_color': '#FF00FF',
+        'border': 1})
     
-    # #Sets formatting for the sheet header
-    # for col_num, value in enumerate(df.columns.values):
-    #     worksheet.write(0, col_num, value, header_format)
+    #Sets formatting for the sheet header
+    for col_num, value in enumerate(df.columns.values):
+        worksheet.write(0, col_num, value, header_format)
+        
+    worksheet.set_column(col_idx, col_idx, 15)
 
     writer.close()
     
